@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delta's Public Calendar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>My Public Availability</h1>
+  <table id="calendar">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Available Slots</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    fetch('availability.json')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector('#calendar tbody');
+        for (const day in data) {
+          const tr = document.createElement('tr');
+          const tdDay = document.createElement('td');
+          tdDay.textContent = day;
+          const tdSlots = document.createElement('td');
+          tdSlots.textContent = data[day].length ? data[day].join(', ') : 'Busy';
+          tr.appendChild(tdDay);
+          tr.appendChild(tdSlots);
+          tbody.appendChild(tr);
+        }
+      })
+      .catch(err => console.error('Error loading availability:', err));
+  </script>
+</body>
+</html>
